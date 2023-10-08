@@ -90,7 +90,7 @@ public class EnemySpawn : MonoBehaviour
     private Vector3 getSpawnLocation()
     {
         float randomAngle = Random.value * 360f;
-        Vector3 relativeSpawnVector = Quaternion.AngleAxis(randomAngle, Vector3.up) * Vector3.forward;
+        Vector3 relativeSpawnVector = Quaternion.AngleAxis(randomAngle, Vector3.up) * Vector3.forward * SpawnRadius;
         Vector3 playerPosition = Player.transform.position;
         return playerPosition + relativeSpawnVector;
     }
