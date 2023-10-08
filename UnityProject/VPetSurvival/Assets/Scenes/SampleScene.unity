@@ -590,7 +590,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Player: {fileID: 1210150935}
   MaxPresence: 10
-  SpawnInterval: 1
+  SpawnInterval: 0.02
   SpawnRadius: 5
   Enemy: {fileID: 8839908780322441477, guid: 123ca9ed88b07ed4488a006e4fe86281, type: 3}
 --- !u!4 &1356767944

@@ -92,6 +92,6 @@ public class EnemySpawn : MonoBehaviour
         float randomAngle = Random.value * 360f;
         Vector3 relativeSpawnVector = Quaternion.AngleAxis(randomAngle, Vector3.up) * Vector3.forward;
         Vector3 playerPosition = Player.transform.position;
-        return playerPosition = relativeSpawnVector;
+        return playerPosition + relativeSpawnVector;
     }
 }
