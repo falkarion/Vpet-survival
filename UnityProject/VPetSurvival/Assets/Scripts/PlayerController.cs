@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using static UnityEngine.InputSystem.InputAction;
@@ -12,16 +13,23 @@ public class PlayerController : MonoBehaviour
     private bool move = false;
     private Vector2 moveDirection;
 
-    private Rigidbody rigidbody;
-    
+    private Rigidbody rb;
+
+    public List<Attack> attacks;
+
     private void Start()
     {
         playerInput = GetComponent<PlayerInput>();
-        rigidbody = GetComponent<Rigidbody>();
+        rb = GetComponent<Rigidbody>();
         moveAction = playerInput.actions["Move"];
         moveAction.started += OnMoveStarted;
         moveAction.performed += OnMovePerformed;
         moveAction.canceled += OnMoveCancelled;
+
+        for (int i = 0; i < attacks.Count; i++)
+        {
+            attacks[i].InitializeAttack(this.transform);
+        }
     }
 
     public void OnMoveStarted(CallbackContext _obj)
@@ -37,7 +45,7 @@ public class PlayerController : MonoBehaviour
     public void OnMoveCancelled(CallbackContext _obj)
     {
         move = false;
-        rigidbody.velocity = Vector3.zero;
+        rb.velocity = Vector3.zero;
     }
     
     private void Update()
@@ -45,7 +53,7 @@ public class PlayerController : MonoBehaviour
         if (move)
         {
             Vector2 moveDelta = moveSpeed * moveDirection;
-            rigidbody.velocity = new Vector3(moveDelta.x, 0, moveDelta.y);
+            rb.velocity = new Vector3(moveDelta.x, 0, moveDelta.y);
         }
     }
 }
