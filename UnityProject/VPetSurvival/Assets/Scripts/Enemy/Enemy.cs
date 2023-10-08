@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +10,8 @@ public class Enemy : MonoBehaviour
     public float Damage = 1f;
     public float Speed = 1f;
     public float Presence = 1f;
+    public Action OnKilled;
+    public float DEBUG_TakeDamage = 0f;
 
     private Rigidbody rb;
     private BoxCollider bc;
@@ -25,5 +28,30 @@ public class Enemy : MonoBehaviour
         bc.size = Vector3.zero;
         bc.center = Vector3.zero;
         bc.bounds.Encapsulate(sr.bounds);
+    }
+
+
+    private void Update()
+    {
+        TakeDamage(DEBUG_TakeDamage);
+        DEBUG_TakeDamage = 0f;
+    }
+
+
+    public void TakeDamage(float _amount)
+    {
+        Health -= _amount;
+
+        if(Health <= 0f)
+        {
+            die();
+        }
+    }
+
+    private void die()
+    {
+        //Destroy
+        Destroy(this.gameObject);
+        OnKilled?.Invoke();
     }
 }

@@ -8,6 +8,7 @@ public class EnemySpawn : MonoBehaviour
 
 
     public float MaxPresence = 10f;
+    public float CurrentPresence = 0f;
     public float SpawnInterval = 1f;
 
     public float SpawnRadius = 5f;
@@ -80,18 +81,24 @@ public class EnemySpawn : MonoBehaviour
         // Determine the current max presence based on factors such as time and score
     }
 
-    private void spawnEnemy(GameObject _enemy)
+    private Enemy spawnEnemy(GameObject _enemy)
     {
         // Instantiate object
         GameObject newEnemy = GameObject.Instantiate(_enemy);
         newEnemy.transform.parent = enemyContainer;
         newEnemy.transform.position = getSpawnLocation();
 
+        Enemy spawnedEnemy = _enemy.GetComponent<Enemy>();
+        spawnedEnemy.OnKilled += () => CurrentPresence -= spawnedEnemy.Presence;
+
         // Set movement target
         EnemyMovement movement = newEnemy.GetComponent<EnemyMovement>();
         movement.Target = Player;
 
         lastSpawnTime = Time.time;
+        CurrentPresence += spawnedEnemy.Presence;
+
+        return spawnedEnemy;
     }
 
     private Vector3 getSpawnLocation()
