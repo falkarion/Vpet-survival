@@ -45,6 +45,7 @@ public class EnemySpawn : MonoBehaviour
     public void StartSpawning()
     {
         spawning = true;
+        spawnEnemy(Enemy);
     }
 
     public void StopSpawning(bool _reset = false)
@@ -71,7 +72,6 @@ public class EnemySpawn : MonoBehaviour
         if (timeSinceLastSpawn >= SpawnInterval)
         {
             spawnEnemy(Enemy);
-            lastSpawnTime += SpawnInterval;
         }
     }
 
@@ -82,9 +82,16 @@ public class EnemySpawn : MonoBehaviour
 
     private void spawnEnemy(GameObject _enemy)
     {
+        // Instantiate object
         GameObject newEnemy = GameObject.Instantiate(_enemy);
         newEnemy.transform.parent = enemyContainer;
         newEnemy.transform.position = getSpawnLocation();
+
+        // Set movement target
+        EnemyMovement movement = newEnemy.GetComponent<EnemyMovement>();
+        movement.Target = Player;
+
+        lastSpawnTime = Time.time;
     }
 
     private Vector3 getSpawnLocation()

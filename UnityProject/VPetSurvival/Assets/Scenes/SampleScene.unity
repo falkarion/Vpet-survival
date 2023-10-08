@@ -507,12 +507,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: df06b2840e45f3d4a9942fabad33d192, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Player: {fileID: 1210150935}
+  RelativePosition: {x: 0, y: 1.4, z: -0.8}
 --- !u!1 &1210150935
 GameObject:
   m_ObjectHideFlags: 0
@@ -590,7 +591,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Player: {fileID: 1210150935}
   MaxPresence: 10
-  SpawnInterval: 0.02
+  SpawnInterval: 1
   SpawnRadius: 5
   Enemy: {fileID: 8839908780322441477, guid: 123ca9ed88b07ed4488a006e4fe86281, type: 3}
 --- !u!4 &1356767944
@@ -602,7 +603,7 @@ Transform:
   m_GameObject: {fileID: 1356767942}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.018165745, y: 0.27675706, z: -0.07258475}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
