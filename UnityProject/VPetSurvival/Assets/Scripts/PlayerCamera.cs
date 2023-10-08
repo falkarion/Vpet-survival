@@ -3,11 +3,21 @@ using UnityEngine;
 public class PlayerCamera : MonoBehaviour
 {
     public GameObject Player;
-    public Vector3 RelativePosition;
+    public float DistanceFromPlayer = 5f;
+    public float Angle = 60f;
+    private Vector3 relativeVectorFromPlayer;
 
     // Update is called once per frame
-    void Update()
+    void Start()
     {
-        this.transform.position = Player.transform.position + RelativePosition;
+        float o = Mathf.Sin(Angle * Mathf.Deg2Rad) * DistanceFromPlayer;
+        float a = Mathf.Cos(Angle * Mathf.Deg2Rad) * DistanceFromPlayer;
+        relativeVectorFromPlayer = new Vector3(0f, o, -a);
+        this.transform.rotation = Quaternion.AngleAxis(Angle, Vector3.right);
+    }
+
+    private void Update()
+    {
+        this.transform.position = Player.transform.position + relativeVectorFromPlayer;
     }
 }
