@@ -222,9 +222,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 283202009}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -50, y: -0, z: -80}
+  m_LocalScale: {x: 100, y: 1, z: 100}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -409,13 +409,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.47729576, y: -0, z: -0, w: 0.87874275}
-  m_LocalPosition: {x: 0, y: 1.411, z: -0.81}
+  m_LocalRotation: {x: 0.43466917, y: -0, z: -0, w: 0.90059024}
+  m_LocalPosition: {x: 0, y: 1.982, z: -1.014}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 57.018, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 51.529, y: 0, z: 0}
 --- !u!114 &963194229
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -429,7 +429,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Player: {fileID: 1210150935}
-  RelativePosition: {x: 0, y: 1.4, z: -0.8}
+  DistanceFromPlayer: 5
+  Angle: 60
 --- !u!1 &1210150935
 GameObject:
   m_ObjectHideFlags: 0
@@ -442,6 +443,7 @@ GameObject:
   - component: {fileID: 1210150938}
   - component: {fileID: 1210150939}
   - component: {fileID: 1210150940}
+  - component: {fileID: 1210150941}
   m_Layer: 0
   m_Name: Character
   m_TagString: Untagged
@@ -525,6 +527,33 @@ MonoBehaviour:
   m_DefaultActionMap: PlayerControls
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!54 &1210150941
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1210150935}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 116
+  m_CollisionDetection: 0
 --- !u!1 &1356767942
 GameObject:
   m_ObjectHideFlags: 0
@@ -556,6 +585,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Player: {fileID: 1210150935}
   MaxPresence: 10
+  CurrentPresence: 0
   SpawnInterval: 1
   SpawnRadius: 5
   Enemy: {fileID: 8839908780322441477, guid: 123ca9ed88b07ed4488a006e4fe86281, type: 3}
@@ -662,8 +692,8 @@ SpriteRenderer:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 283202013}
   - {fileID: 705507995}
   - {fileID: 963194228}
   - {fileID: 1210150937}
-  - {fileID: 283202013}
   - {fileID: 1356767944}
