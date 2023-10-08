@@ -4,22 +4,23 @@ using Random = UnityEngine.Random;
 
 public class EnemySpawn : MonoBehaviour
 {
+    private const int SPAWN_LOOP_CAP = 250;
+    private const int DEFAULT_MAX_PRESENCE = 10;
+
     public GameObject Player;
-
-
-    public float MaxPresence = 10f;
-    public float CurrentPresence = 0f;
-    public float SpawnInterval = 1f;
-
-    public float SpawnRadius = 5f;
-
     public GameObject Enemy;
+
+    public int MaxPresence = 10;
+    public int CurrentPresence = 0;
+    public int MaxPresenceIncreasePerMinute = 30;
+
+    public float SpawnInterval = 1f;
+    public float SpawnRadius = 5f;
 
     private Transform enemyContainer;
     private float gameTimeElapsed = 0f;
     private float lastSpawnTime = 0f;
     private bool spawning = false;
-
 
     private void Awake()
     {
@@ -34,33 +35,17 @@ public class EnemySpawn : MonoBehaviour
 
     private void Start()
     {
-        StartSpawning();
+        spawning = true;
+        MaxPresence = DEFAULT_MAX_PRESENCE;
     }
 
     private void FixedUpdate()
     {
-        doSpawning(Time.fixedDeltaTime);
+        determineMaxPresence();
+        doSpawn(Time.fixedDeltaTime);
     }
 
-
-    public void StartSpawning()
-    {
-        spawning = true;
-        spawnEnemy(Enemy);
-    }
-
-    public void StopSpawning(bool _reset = false)
-    {
-        spawning = false;
-
-        if (_reset)
-        {
-            gameTimeElapsed = 0f;
-        }
-    }
-
-
-    private void doSpawning(float _deltaTime)
+    private void doSpawn(float _deltaTime)
     {
         if (!spawning)
         {
@@ -72,13 +57,36 @@ public class EnemySpawn : MonoBehaviour
         float timeSinceLastSpawn = gameTimeElapsed - lastSpawnTime;
         if (timeSinceLastSpawn >= SpawnInterval)
         {
-            spawnEnemy(Enemy);
+            spawnEnemies();
+            lastSpawnTime = Time.time;
         }
     }
 
-    private void updatePresence()
+    private void determineMaxPresence()
     {
         // Determine the current max presence based on factors such as time and score
+        int presenceBasedOnTime = Mathf.FloorToInt(gameTimeElapsed / 60f * MaxPresenceIncreasePerMinute);
+        MaxPresence = DEFAULT_MAX_PRESENCE + presenceBasedOnTime;
+    }
+
+    private void spawnEnemies()
+    {
+        bool spawnLoopCapHit = true;
+        for (int i = 0; i < SPAWN_LOOP_CAP; i++)
+        {
+            if(CurrentPresence >= MaxPresence)
+            {
+                spawnLoopCapHit = false;
+                break;
+            }
+
+            spawnEnemy(Enemy);
+        }
+
+        if(spawnLoopCapHit)
+        {
+            Debug.LogWarning("Spawn loop cap was hit. This could be a bug.");
+        }
     }
 
     private Enemy spawnEnemy(GameObject _enemy)
@@ -88,14 +96,16 @@ public class EnemySpawn : MonoBehaviour
         newEnemy.transform.parent = enemyContainer;
         newEnemy.transform.position = getSpawnLocation();
 
-        Enemy spawnedEnemy = _enemy.GetComponent<Enemy>();
-        spawnedEnemy.OnKilled += () => CurrentPresence -= spawnedEnemy.Presence;
+        Enemy spawnedEnemy = newEnemy.GetComponent<Enemy>();
+        spawnedEnemy.OnKilled += () =>
+        {
+            CurrentPresence -= spawnedEnemy.Presence;
+        };
 
         // Set movement target
         EnemyMovement movement = newEnemy.GetComponent<EnemyMovement>();
         movement.Target = Player;
-
-        lastSpawnTime = Time.time;
+        
         CurrentPresence += spawnedEnemy.Presence;
 
         return spawnedEnemy;
