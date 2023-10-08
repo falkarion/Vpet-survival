@@ -4,6 +4,8 @@ using Random = UnityEngine.Random;
 
 public class EnemySpawn : MonoBehaviour
 {
+    private const int SPAWN_LOOP_CAP = 250;
+
     public GameObject Player;
 
 
@@ -72,13 +74,34 @@ public class EnemySpawn : MonoBehaviour
         float timeSinceLastSpawn = gameTimeElapsed - lastSpawnTime;
         if (timeSinceLastSpawn >= SpawnInterval)
         {
-            spawnEnemy(Enemy);
+            spawnEnemies();
         }
     }
 
     private void updatePresence()
     {
         // Determine the current max presence based on factors such as time and score
+    }
+
+
+    private void spawnEnemies()
+    {
+        bool spawnLoopCapHit = true;
+        for (int i = 0; i < SPAWN_LOOP_CAP; i++)
+        {
+            if(CurrentPresence >= MaxPresence)
+            {
+                spawnLoopCapHit = false;
+                break;
+            }
+
+            spawnEnemy(Enemy);
+        }
+
+        if(spawnLoopCapHit)
+        {
+            Debug.LogWarning("Spawn loop cap was hit. This could be a bug.");
+        }
     }
 
     private Enemy spawnEnemy(GameObject _enemy)
@@ -88,8 +111,11 @@ public class EnemySpawn : MonoBehaviour
         newEnemy.transform.parent = enemyContainer;
         newEnemy.transform.position = getSpawnLocation();
 
-        Enemy spawnedEnemy = _enemy.GetComponent<Enemy>();
-        spawnedEnemy.OnKilled += () => CurrentPresence -= spawnedEnemy.Presence;
+        Enemy spawnedEnemy = newEnemy.GetComponent<Enemy>();
+        spawnedEnemy.OnKilled += () =>
+        {
+            CurrentPresence -= spawnedEnemy.Presence;
+        };
 
         // Set movement target
         EnemyMovement movement = newEnemy.GetComponent<EnemyMovement>();
