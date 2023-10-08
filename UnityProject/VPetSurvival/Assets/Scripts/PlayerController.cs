@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using static UnityEngine.InputSystem.InputAction;
 
-[RequireComponent(typeof(PlayerInput))]
+[RequireComponent(typeof(PlayerInput), typeof(Rigidbody))]
 public class PlayerController : MonoBehaviour
 {
     PlayerInput playerInput;
@@ -11,11 +11,13 @@ public class PlayerController : MonoBehaviour
     public float moveSpeed = 1;
     private bool move = false;
     private Vector2 moveDirection;
+
+    private Rigidbody rigidbody;
     
     private void Start()
     {
         playerInput = GetComponent<PlayerInput>();
-        
+        rigidbody = GetComponent<Rigidbody>();
         moveAction = playerInput.actions["Move"];
         moveAction.started += OnMoveStarted;
         moveAction.performed += OnMovePerformed;
@@ -35,14 +37,15 @@ public class PlayerController : MonoBehaviour
     public void OnMoveCancelled(CallbackContext _obj)
     {
         move = false;
+        rigidbody.velocity = Vector3.zero;
     }
     
     private void Update()
     {
         if (move)
         {
-            Vector2 moveDelta = moveSpeed * moveDirection * Time.deltaTime;
-            this.transform.position += new Vector3(moveDelta.x, 0, moveDelta.y);
+            Vector2 moveDelta = moveSpeed * moveDirection;
+            rigidbody.velocity = new Vector3(moveDelta.x, 0, moveDelta.y);
         }
     }
 }
