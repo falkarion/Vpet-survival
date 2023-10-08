@@ -9,7 +9,7 @@ public class Enemy : MonoBehaviour
     public float Health = 1f;
     public float Damage = 1f;
     public float Speed = 1f;
-    public float Presence = 1f;
+    public int Presence = 1;
     public Action OnKilled;
     public float DEBUG_TakeDamage = 0f;
 
